@@ -3,10 +3,14 @@ export interface ChatMessage {
   content: string;
 }
 
+export type JsonSchema = Record<string, unknown>;
+
 export interface ChatRequest {
   message: string;
   system?: string;
   history?: ChatMessage[];
+  model?: string;
+  format?: "json" | JsonSchema;
 }
 
 export interface ChatResponse {
@@ -17,8 +21,14 @@ export interface ChatResponse {
 
 export interface HealthResponse {
   status: "ok" | "error";
-  model: string;
+  defaultModel: string;
   ollamaConnected: boolean;
+  queue: { queued: number; active: number; maxConcurrent: number };
+}
+
+export interface ModelsResponse {
+  defaultModel: string;
+  available: string[];
 }
 
 export interface OllamaChatResponse {
@@ -26,4 +36,8 @@ export interface OllamaChatResponse {
   message: { role: string; content: string };
   total_duration: number;
   done: boolean;
+}
+
+export interface OllamaTagsResponse {
+  models: { name: string; model: string; size: number; digest: string }[];
 }
